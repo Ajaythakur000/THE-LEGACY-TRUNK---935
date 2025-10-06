@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 require('dotenv').config(); // .env file ki variables ko load karne ke liye
 
 const userRoutes = require('./routes/userRoutes');
+const storyRoutes = require('./routes/storyRoutes');
+const timelineRoutes = require('./routes/timelineRoutes');
 
 // Express app initialize karna
 const app = express();
@@ -13,6 +15,8 @@ const PORT = process.env.PORT || 8000;
 const MONGO_URI = process.env.MONGO_URI;
 
 app.use('/api/users', userRoutes);
+app.use('/api/stories', storyRoutes);
+app.use('/api/timelines', timelineRoutes);
 // Database se connect karne ka function
 const connectDB = async () => {
     try {
