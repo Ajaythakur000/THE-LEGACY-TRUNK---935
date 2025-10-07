@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config(); // .env file ki variables ko load karne ke liye
 
@@ -8,6 +9,7 @@ const timelineRoutes = require('./routes/timelineRoutes');
 
 // Express app initialize karna
 const app = express();
+app.use(cors());
 app.use(express.json()); // JSON body parsing ke liye middleware
 
 // Environment variables se PORT aur MONGO_URI lena

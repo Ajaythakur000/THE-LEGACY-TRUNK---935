@@ -118,4 +118,49 @@ const addEventToTimeline = async (req, res) => {
 };
 
 
-module.exports = { createTimeline, getMyTimelines, addEventToTimeline, getTimelineById }; // Naya function export kiya
+/**
+ * @desc    Remove an event from a timeline
+ * @route   DELETE /api/timelines/:timelineId/events/:eventId
+ * @access  Private
+ */
+const removeEventFromTimeline = async (req, res) => {
+    try {
+        const { timelineId, eventId } = req.params;
+
+        // 1. Pehle timeline ko dhoondho
+        const timeline = await Timeline.findById(timelineId);
+
+        if (!timeline) {
+            return res.status(404).json({ message: 'Timeline not found' });
+        }
+
+        // 2. Security Check: Kya yeh timeline isi user ki hai?
+        if (timeline.user.toString() !== req.user._id.toString()) {
+            return res.status(401).json({ message: 'User not authorized' });
+        }
+
+        // 3. Event ko database se delete karo
+        const event = await Event.findByIdAndDelete(eventId);
+        if (!event) {
+            return res.status(404).json({ message: 'Event not found' });
+        }
+
+        // 4. Timeline ke 'events' array se uss event ki ID ko hatao
+        timeline.events.pull(eventId);
+        await timeline.save();
+
+        res.json({ message: 'Event removed successfully' });
+
+    } catch (error) {
+        res.status(500).json({ message: 'Server Error: ' + error.message });
+    }
+};
+
+
+module.exports = { 
+    createTimeline, 
+    getMyTimelines, 
+    getTimelineById, 
+    addEventToTimeline, 
+    removeEventFromTimeline // Naya function export kiya
+};
