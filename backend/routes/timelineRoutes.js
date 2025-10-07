@@ -1,6 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { createTimeline, getMyTimelines, addEventToTimeline, getTimelineById } = require('../controllers/timelineController.js');
+const { 
+    createTimeline, 
+    getMyTimelines, 
+    getTimelineById, 
+    addEventToTimeline, 
+    removeEventFromTimeline 
+} = require('../controllers/timelineController.js');
 const { protect } = require('../middleware/authMiddleware.js'); // Hamara gatekeeper
 
 // Ek nayi timeline banane aur apni saari timelines get karne ke liye route
@@ -11,6 +17,10 @@ router.route('/').post(protect, createTimeline).get(protect, getMyTimelines);
 router.route('/:id/events').post(protect, addEventToTimeline);
 // Route for getting a single timeline by its ID
 router.route('/:id').get(protect, getTimelineById);
+
+// Route for deleting a specific event from a specific timeline
+router.route('/:timelineId/events/:eventId').delete(protect, removeEventFromTimeline);
+
 
 
 module.exports = router;
