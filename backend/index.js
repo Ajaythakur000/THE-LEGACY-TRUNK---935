@@ -8,6 +8,7 @@ const storyRoutes = require('./routes/storyRoutes');
 const timelineRoutes = require('./routes/timelineRoutes');
 const circleRoutes = require('./routes/circleRoutes'); 
 const searchRoutes = require('./routes/searchRoutes'); 
+const exportRoutes = require('./routes/exportRoutes');
 
 // Express app initialize karna
 const app = express();
@@ -23,6 +24,7 @@ app.use('/api/stories', storyRoutes);
 app.use('/api/timelines', timelineRoutes);
 app.use('/api/circles', circleRoutes); // Family Circle ke routes
 app.use('/api/search', searchRoutes); 
+app.use('/api/export', exportRoutes); // Export routes
 // Database se connect karne ka function
 
 const connectDB = async () => {
